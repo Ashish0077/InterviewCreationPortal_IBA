@@ -11,7 +11,8 @@
     "watch-node": "npx nodemon -r dotenv/config build/server.js",
     "clean": "npx rimraf ./build",
     "build-ts": "npx tsc",
-    "watch-ts": "npx tsc -w"
+    "watch-ts": "npx tsc -w",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
   },
   "repository": {
     "type": "git",
