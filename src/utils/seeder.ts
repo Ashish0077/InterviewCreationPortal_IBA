@@ -41,7 +41,7 @@ const seeder = async () => {
         },
         {
             startTime: new Date(2021, 6, 2, 17, 0),
-            endTime: new Date(2021, 6, 1, 18, 0),
+            endTime: new Date(2021, 6, 3, 18, 0),
             participants: [p[2], p[3]]
         }, 
         {
