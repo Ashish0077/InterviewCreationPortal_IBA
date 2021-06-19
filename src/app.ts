@@ -4,6 +4,7 @@ import connectDB from "./database/db";
 import routerV1 from "./routes/v1/router";
 import { ApiError, InternalError } from "./core/ApiError";
 import { environment } from "./config";
+import { SuccessResponse } from "./core/ApiResponse";
 
 connectDB();
 
@@ -15,10 +16,7 @@ app.use(morgan("dev"));
 app.use("/v1", routerV1);
 
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
-	res.json({
-		success: true,
-		msg: "Server is up and running. Voila!!"
-	});
+	new SuccessResponse("Server is up and running. Voila!!", {}).send(res);
 });
 
 // Middleware Error Handler
