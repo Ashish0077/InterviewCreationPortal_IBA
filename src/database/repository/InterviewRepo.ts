@@ -1,6 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
 import Interview from "../model/Interview";
-import Participant, { ParticipantRole } from "../model/Participant";
 
 @EntityRepository(Interview)
 export default class InterviewRepo extends Repository<Interview> {

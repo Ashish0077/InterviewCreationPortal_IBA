@@ -35,8 +35,8 @@ const seeder = async () => {
     const p = await pRepo.find();
     const interviews: IInterview[] = [
         {
-            startTime: new Date(2021, 6, 1, 1, 0),
-            endTime: new Date(2021, 6, 1, 2, 0),
+            startTime: new Date("2021-07-01T11:30:00.000Z"),
+            endTime: new Date("2021-07-01T12:30:00.000Z"),
             participants: [p[0], p[1]]
         },
         {
