@@ -1,46 +1,47 @@
 {
-  "name": "interviewcreationportal_iba",
-  "version": "1.0.0",
-  "description": "InterviewBit Assignment",
-  "main": "index.js",
-  "scripts": {
-    "start": "npm run build && npm run serve",
-    "serve": "node -r dotenv/config build/server.js",
-    "build": "npm run clean && npm run build-ts",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
-    "watch-node": "npx nodemon -r dotenv/config build/server.js",
-    "clean": "npx rimraf ./build",
-    "build-ts": "npx tsc",
-    "watch-ts": "npx tsc -w",
-    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Ashish0077/InterviewCreationPortal_IBA.git"
-  },
-  "keywords": [],
-  "author": "Ashish0077",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Ashish0077/InterviewCreationPortal_IBA/issues"
-  },
-  "homepage": "https://github.com/Ashish0077/InterviewCreationPortal_IBA#readme",
-  "devDependencies": {
-    "@types/express": "^4.17.12",
-    "@types/morgan": "^1.9.2",
-    "@types/node": "^15.12.4",
-    "concurrently": "^6.2.0",
-    "dotenv": "^10.0.0",
-    "nodemon": "^2.0.7",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.0.0",
-    "typescript": "^4.3.4"
-  },
-  "dependencies": {
-    "express": "^4.17.1",
-    "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
-    "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.34"
-  }
+	"name": "interviewcreationportal_iba",
+	"version": "1.0.0",
+	"description": "InterviewBit Assignment",
+	"main": "index.js",
+	"scripts": {
+		"start": "npm run build && npm run serve",
+		"serve": "node -r dotenv/config build/server.js",
+		"build": "npm run clean && npm run build-ts",
+		"watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run watch-node\"",
+		"watch-node": "npx nodemon -r dotenv/config build/server.js",
+		"clean": "npx rimraf ./build",
+		"build-ts": "npx tsc",
+		"watch-ts": "npx tsc -w",
+		"typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
+		"lint": "npx prettier --write ."
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Ashish0077/InterviewCreationPortal_IBA.git"
+	},
+	"keywords": [],
+	"author": "Ashish0077",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Ashish0077/InterviewCreationPortal_IBA/issues"
+	},
+	"homepage": "https://github.com/Ashish0077/InterviewCreationPortal_IBA#readme",
+	"devDependencies": {
+		"@types/express": "^4.17.12",
+		"@types/morgan": "^1.9.2",
+		"@types/node": "^15.12.4",
+		"concurrently": "^6.2.0",
+		"dotenv": "^10.0.0",
+		"nodemon": "^2.0.7",
+		"rimraf": "^3.0.2",
+		"ts-node": "^10.0.0",
+		"typescript": "^4.3.4"
+	},
+	"dependencies": {
+		"express": "^4.17.1",
+		"morgan": "^1.10.0",
+		"mysql": "^2.18.1",
+		"reflect-metadata": "^0.1.13",
+		"typeorm": "^0.2.34"
+	}
 }

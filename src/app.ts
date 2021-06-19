@@ -13,10 +13,10 @@ app.use(morgan("dev"));
 app.use("/v1", routerV1);
 
 app.get("/test", (req: Request, res: Response, next: NextFunction) => {
-    res.json({
-        success: true,
-        msg: "Server is up and running. Voila!!"
-    });
+	res.json({
+		success: true,
+		msg: "Server is up and running. Voila!!"
+	});
 });
 
 export default app;

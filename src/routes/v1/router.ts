@@ -5,6 +5,6 @@ import participants from "./participant/participants";
 const router = express.Router();
 
 router.use("/participants", participants);
-router.use("/interviews", interviews)
+router.use("/interviews", interviews);
 
 export default router;
