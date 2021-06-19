@@ -82,4 +82,13 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
         success: true,
         data: interview
     })
-})
+});
+
+export const getUpcomingInterviews = asyncHandler(async (req: Request, res: Response) => {
+    const iRepo = getCustomRepository(InterviewRepo);
+    const interviews = await iRepo.getUpcomingInterviews();
+    res.json({
+        success: true,
+        data: interviews
+    });
+});
