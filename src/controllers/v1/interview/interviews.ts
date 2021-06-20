@@ -7,6 +7,8 @@ import InterviewRepo from "../../../database/repository/InterviewRepo";
 import ParticipantRepo from "../../../database/repository/ParticipantRepo";
 import asyncHandler from "../../../utils/asyncHandler";
 import checkOverlap from "../../../utils/checkOverlap";
+import sendEmail from "../../../utils/sendEmails";
+import moment from "moment";
 
 export const getAllInterviews = asyncHandler(async (req: Request, res: Response) => {
 	const iRepo = getCustomRepository(InterviewRepo);
@@ -57,6 +59,19 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 	});
 
 	await iRepo.save(interview);
+
+	for (let p of notClashingParticipants) {
+		console.log(`Sending mail to ${p.email}`);
+		await sendEmail({
+			email: p.email,
+			subject: "Interviewbit Engineering Role Interview",
+			message: `Timing: ${moment(startTime).format("hh:mm A")} - ${moment(endTime).format(
+				"hh:mm A"
+			)} on ${moment(startTime).format("DD-MM-YYYY")}`
+		});
+		console.log("mail sent!");
+	}
+
 	new SuccessResponse("success", interview).send(res);
 });
 
@@ -79,7 +94,7 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 		throw new BadRequestError(
 			"Please enter startTime, endTime and participants email list properly."
 		);
-	console.log(req.body)
+	console.log(req.body);
 	startTime = new Date(startTime);
 	endTime = new Date(endTime);
 
@@ -110,10 +125,22 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 				);
 		updateInterview.participants.push(participant);
 	}
-	console.log(updateInterview);
 
 	// update the interview
 	await iRepo.save(updateInterview);
+
+	for (let p of updateInterview.participants) {
+		console.log(`Sending mail to ${p.email}`);
+		await sendEmail({
+			email: p.email,
+			subject: "[RESCHEDULED] Interviewbit Engineering Role Interview",
+			message: `Timing: ${moment(startTime).format("hh:mm A")} - ${moment(endTime).format(
+				"hh:mm A"
+			)} on ${moment(startTime).format("DD-MM-YYYY")}`
+		});
+		console.log("mail sent!");
+	}
+
 	new SuccessResponse("success", updateInterview).send(res);
 });
 
@@ -126,7 +153,7 @@ export const getInterview = asyncHandler(async (req: Request, res: Response) => 
 	}
 
 	new SuccessResponse("success", interview).send(res);
-})
+});
 
 export const deleteInterview = asyncHandler(async (req: Request, res: Response) => {
 	const uuid = req.params.uuid;
@@ -137,4 +164,4 @@ export const deleteInterview = asyncHandler(async (req: Request, res: Response) 
 	}
 	await iRepo.remove(interview);
 	new SuccessResponse("successfully deleted", interview).send(res);
-})
+});

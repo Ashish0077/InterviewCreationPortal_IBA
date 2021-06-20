@@ -42,14 +42,20 @@ const seeder = async () => {
 			name: "Mohak kapoor",
 			role: ParticipantRole.INTERVIEWER,
 			email: "mohakkapoor@email.com"
-		},		
+		},
 		{
 			name: "Neha Singh",
 			role: ParticipantRole.INTERVIEWER,
 			email: "nehasingh@email.com"
+		},
+		{
+			name: "Bhumika Arora",
+			role: ParticipantRole.INTERVIEWER,
+			email: "bhumikaarora0077@gmail.com"
 		}
 	];
 	await pRepo.query("delete from participants");
+	await iRepo.query("delete from interviews");
 	await pRepo.save(participants);
 };
 

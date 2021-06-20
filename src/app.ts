@@ -35,4 +35,13 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 	}
 });
 
+// const arr = [
+// 	{ name: "A", email: "email1" },
+// 	{ name: "B", email: "email2" },
+// 	{ name: "C", email: "email3" },
+// 	{ name: "D", email: "email4" }
+// ];
+// const mails = arr.map((el) => el.email);
+// console.log(arr);
+// console.log(mails);
 export default app;
