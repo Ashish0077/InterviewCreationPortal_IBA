@@ -4,7 +4,8 @@ import {
 	addInterview,
 	getUpcomingInterviews,
 	updateInterview,
-	getInterview
+	getInterview,
+	deleteInterview
 } from "../../../controllers/v1/interview/interviews";
 
 const router = express.Router();
@@ -14,5 +15,6 @@ router.post("/", addInterview);
 router.get("/upcoming", getUpcomingInterviews);
 router.get("/:uuid", getInterview);
 router.put("/:uuid", updateInterview);
+router.delete("/:uuid", deleteInterview);
 
 export default router;

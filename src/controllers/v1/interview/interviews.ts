@@ -127,3 +127,14 @@ export const getInterview = asyncHandler(async (req: Request, res: Response) => 
 
 	new SuccessResponse("success", interview).send(res);
 })
+
+export const deleteInterview = asyncHandler(async (req: Request, res: Response) => {
+	const uuid = req.params.uuid;
+	const iRepo = getCustomRepository(InterviewRepo);
+	let interview = await iRepo.getInterviewByUuid(uuid);
+	if (!interview) {
+		throw new NoDataError("invalid uuid, Interview does not exist");
+	}
+	await iRepo.remove(interview);
+	new SuccessResponse("successfully deleted", interview).send(res);
+})
