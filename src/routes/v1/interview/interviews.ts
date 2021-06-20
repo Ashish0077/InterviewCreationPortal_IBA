@@ -3,7 +3,8 @@ import {
 	getAllInterviews,
 	addInterview,
 	getUpcomingInterviews,
-	updateInterview
+	updateInterview,
+	getInterview
 } from "../../../controllers/v1/interview/interviews";
 
 const router = express.Router();
@@ -11,6 +12,7 @@ const router = express.Router();
 router.get("/", getAllInterviews);
 router.post("/", addInterview);
 router.get("/upcoming", getUpcomingInterviews);
+router.get("/:uuid", getInterview);
 router.put("/:uuid", updateInterview);
 
 export default router;

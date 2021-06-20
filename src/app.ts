@@ -5,10 +5,13 @@ import routerV1 from "./routes/v1/router";
 import { ApiError, InternalError } from "./core/ApiError";
 import { environment } from "./config";
 import { SuccessResponse } from "./core/ApiResponse";
+import cors from "cors";
 
 connectDB();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use(morgan("dev"));

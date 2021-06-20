@@ -112,3 +112,14 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 	updateInterview = await iRepo.save(updateInterview);
 	new SuccessResponse("success", updateInterview).send(res);
 });
+
+export const getInterview = asyncHandler(async (req: Request, res: Response) => {
+	const uuid = req.params.uuid;
+	const iRepo = getCustomRepository(InterviewRepo);
+	let interview = await iRepo.getInterviewByUuid(uuid);
+	if (!interview) {
+		throw new NoDataError("invalid uuid, Interview does not exist");
+	}
+
+	new SuccessResponse("success", interview).send(res);
+})
