@@ -79,9 +79,12 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 		throw new BadRequestError(
 			"Please enter startTime, endTime and participants email list properly."
 		);
-
+	console.log(req.body)
 	startTime = new Date(startTime);
 	endTime = new Date(endTime);
+
+	updateInterview.startTime = startTime;
+	updateInterview.endTime = endTime;
 
 	if (startTime < Date.now())
 		throw new BadRequestError(
@@ -107,9 +110,10 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 				);
 		updateInterview.participants.push(participant);
 	}
+	console.log(updateInterview);
 
 	// update the interview
-	updateInterview = await iRepo.save(updateInterview);
+	await iRepo.save(updateInterview);
 	new SuccessResponse("success", updateInterview).send(res);
 });
 
