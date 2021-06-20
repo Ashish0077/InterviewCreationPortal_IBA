@@ -44,8 +44,8 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 				throw new BadRequestError(
 					`${participant.email} is having another interview during this time slot. Please reschedule!`
 				);
-			notClashingParticipants.push(participant);
 		}
+		notClashingParticipants.push(participant);
 	}
 
 	// add the interview
