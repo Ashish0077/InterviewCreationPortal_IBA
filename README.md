@@ -27,7 +27,7 @@ Create a simple app where admins can create interviews by selecting participants
   * .env.example --> .env
   * ormconfig.json.example --> ormconfig.json
 * Provide `username`, `password` and `database` (DB_NAME) info in **ormconfig.json** for typeorm to properly connect to the Database.
-* Provide `NODE_ENV` (dev/prod) and `PORT`in **.env** file
+* Provide `NODE_ENV` (dev/prod), `PORT`, `EMAIL`, `PASSWORD` in **.env** file
 * Execute `npm start`.
 
 ## Project Directory Structure
