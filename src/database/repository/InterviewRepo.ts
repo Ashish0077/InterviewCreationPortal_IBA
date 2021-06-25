@@ -25,4 +25,12 @@ export default class InterviewRepo extends Repository<Interview> {
 			.where("interviews.uuid = :uuid", { uuid })
 			.getOne();
 	}
+
+	getInterviewByUuidWithEmail(uuid: string, email: string): Promise<Interview | undefined> {
+		return this.createQueryBuilder("interviews")
+			.leftJoinAndSelect("interviews.participants", "participants")
+			.where("interviews.uuid = :id", { id: uuid })
+			.having("participants.email = :email", { email })
+			.getOne();
+	}
 }

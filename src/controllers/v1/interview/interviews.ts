@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { NextFunction, Request, response, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import { BadRequestError, NoDataError } from "../../../core/ApiError";
 import { SuccessResponse } from "../../../core/ApiResponse";
@@ -36,10 +36,16 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 	if (participants.length < 2) throw new BadRequestError("Please provide atleast 2 participants");
 
 	const pRepo = getCustomRepository(ParticipantRepo);
-	const notClashingParticipants: Participant[] = [];
-	for (let participantEmail of participants) {
-		const participant = await pRepo.getParticipantByEmail(participantEmail);
-		if (!participant) throw new NoDataError("Participant not found!");
+	const emailParticipants = await pRepo.getParticipantsByEmails(participants);
+	const checkEmails = {};
+	for (const email of participants) {
+		// @ts-ignore
+		checkEmails[email] = false;
+	}
+	console.log(emailParticipants);
+	for (let participant of emailParticipants) {
+		// @ts-expect-error
+		checkEmails[participant.email] = true;
 		if (!participant.interviews) continue;
 		for (let interview of participant.interviews) {
 			if (checkOverlap(interview, startTime, endTime))
@@ -47,7 +53,11 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 					`${participant.email} is having another interview during this time slot. Please reschedule!`
 				);
 		}
-		notClashingParticipants.push(participant);
+	}
+
+	for (const email in checkEmails) {
+		// @ts-ignore
+		if (checkEmails[email] == false) throw new NoDataError(`Participant ${email} does not exist`);
 	}
 
 	// add the interview
@@ -55,14 +65,14 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 	const interview = await iRepo.create({
 		startTime: startTime,
 		endTime: endTime,
-		participants: notClashingParticipants
+		participants: emailParticipants
 	});
 
 	await iRepo.save(interview);
 
-	for (let p of notClashingParticipants) {
+	for (let p of emailParticipants) {
 		console.log(`Sending mail to ${p.email}`);
-		await sendEmail({
+		sendEmail({
 			email: p.email,
 			subject: "Interviewbit Engineering Role Interview",
 			message: `Timing: ${moment(startTime).format("hh:mm A")} - ${moment(endTime).format(
@@ -165,3 +175,15 @@ export const deleteInterview = asyncHandler(async (req: Request, res: Response) 
 	await iRepo.remove(interview);
 	new SuccessResponse("successfully deleted", interview).send(res);
 });
+
+export const checkParticipantAccess = asyncHandler(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const uuid = req.params.uuid;
+		const email = req.query.email;
+		if (!email) throw new BadRequestError("Please provide a email to check");
+		const iRepo = getCustomRepository(InterviewRepo);
+		const interview = await iRepo.getInterviewByUuidWithEmail(uuid, email as string);
+		if (!interview) throw new BadRequestError("Access Denied!");
+		new SuccessResponse("You are allowed", {}).send(res);
+	}
+);
