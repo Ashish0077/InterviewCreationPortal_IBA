@@ -34,4 +34,5 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 		ApiError.handle(new InternalError(), res);
 	}
 });
+
 export default app;
