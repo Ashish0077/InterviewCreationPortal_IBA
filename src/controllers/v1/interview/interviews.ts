@@ -42,7 +42,6 @@ export const addInterview = asyncHandler(async (req: Request, res: Response) => 
 		// @ts-ignore
 		checkEmails[email] = false;
 	}
-	console.log(emailParticipants);
 	for (let participant of emailParticipants) {
 		// @ts-expect-error
 		checkEmails[participant.email] = true;
@@ -122,26 +121,37 @@ export const updateInterview = asyncHandler(async (req: Request, res: Response) 
 	if (participants.length < 2) throw new BadRequestError("Please provide atleast 2 participants");
 
 	const pRepo = getCustomRepository(ParticipantRepo);
-	updateInterview.participants = [];
-	for (let participantEmail of participants) {
-		console.log(participantEmail);
-		const participant = await pRepo.getParticipantByEmail(participantEmail);
-		if (!participant) throw new NoDataError("Participant not found!");
+	const emailParticipants = await pRepo.getParticipantsByEmails(participants);
+	const checkEmails = {};
+	for (const email of participants) {
+		// @ts-ignore
+		checkEmails[email] = false;
+	}
+	for (let participant of emailParticipants) {
+		// @ts-expect-error
+		checkEmails[participant.email] = true;
 		if (!participant.interviews) continue;
-		for (let interview of participant.interviews)
-			if (interview.uuid != uuid && checkOverlap(interview, startTime, endTime))
+		for (let interview of participant.interviews) {
+			if (checkOverlap(interview, startTime, endTime))
 				throw new BadRequestError(
 					`${participant.email} is having another interview during this time slot. Please reschedule!`
 				);
-		updateInterview.participants.push(participant);
+		}
 	}
+
+	for (const email in checkEmails) {
+		// @ts-ignore
+		if (checkEmails[email] == false) throw new NoDataError(`Participant ${email} does not exist`);
+	}
+
+	updateInterview.participants = emailParticipants;
 
 	// update the interview
 	await iRepo.save(updateInterview);
 
 	for (let p of updateInterview.participants) {
 		console.log(`Sending mail to ${p.email}`);
-		await sendEmail({
+		sendEmail({
 			email: p.email,
 			subject: "[RESCHEDULED] Interviewbit Engineering Role Interview",
 			message: `Timing: ${moment(startTime).format("hh:mm A")} - ${moment(endTime).format(
